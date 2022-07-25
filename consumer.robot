@@ -25,5 +25,7 @@ Validate traffic data
 
 Post traffic data to sales system
     [Arguments]    ${traffic_data}
-    POST    https://robocorp.com/inhuman-insurance-inc/sales-system-api
+    ${status}    ${return}=    Run Keyword And Ignore Error
+    ...    POST
+    ...    url=https://robocorp.com/inhuman-insurance-inc/sales-system-api
     ...    json=${traffic_data}

@@ -5,6 +5,7 @@ Documentation       Inhuman Insurance, Inc. Artificial Intelligence System robot
 Library             RPA.HTTP
 Library             RPA.JSON
 Library             RPA.Tables
+Library             Collections
 
 
 *** Variables ***
@@ -16,6 +17,7 @@ Produce traffic data work items
     Download traffic data
     ${traffic_data}=    Load traffic data as table
     ${filtered_data}=    Filter and sort traffic data    ${traffic_data}
+    ${filtered_data}=    Get latest data by country    ${filtered_data}
 
 
 *** Keywords ***
@@ -41,3 +43,14 @@ Filter and sort traffic data
     Filter Table By Column    ${table}    ${genter_key}    ==    ${both_genders}
     Sort Table By Column    ${table}    ${year_key}    ascending=False
     RETURN    ${table}
+
+Get latest data by country
+    [Arguments]    ${table}
+    ${country_key}=    Set Variable    SpatialDim
+    ${table} = Group table By Column    ${table}    ${country_key}
+    ${latest_data_by_country}=    Create List
+    FOR    ${group}    IN    @{table}
+        ${first_row}=    Pop Table Row    ${group}
+        Append To List    ${latest_data_by_country}    ${first_row}
+    END
+    RETURN    ${latest_data_by_country}

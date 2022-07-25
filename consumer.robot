@@ -29,3 +29,11 @@ Post traffic data to sales system
     ...    POST
     ...    url=https://robocorp.com/inhuman-insurance-inc/sales-system-api
     ...    json=${traffic_data}
+    Handle traffic API response    ${status}
+
+Handle traffic API response
+    [Arguments]    ${status}
+    IF    "${status}" == "PASS"    Handle traffic API OK response
+
+Handle traffic API OK response
+    Release Input Work Item    DONE

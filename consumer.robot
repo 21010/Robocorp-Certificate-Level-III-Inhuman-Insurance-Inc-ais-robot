@@ -23,7 +23,7 @@ Process traffic data
 
 Validate traffic data
     [Arguments]    ${traffic_data}
-    ${country}=    Get value from JSON    ${traffic_data}    $.country
+    ${country}=    Get Value From Json    ${traffic_data}    $.country
     ${valid}=    Evaluate    len("${country}") == 3
     RETURN    ${valid}
 
@@ -31,7 +31,7 @@ Post traffic data to sales system
     [Arguments]    ${traffic_data}
     ${status}    ${return}=    Run Keyword And Ignore Error
     ...    POST
-    ...    url=https://robocorp.com/inhuman-insurance-inc/sales-system-api
+    ...    https://robocorp.com/inhuman-insurance-inc/sales-system-api
     ...    json=${traffic_data}
     Handle traffic API response    ${status}    ${return}    ${traffic_data}
 
@@ -53,7 +53,7 @@ Handle traffic API error response
     ...    ERROR
     Release Input Work Item
     ...    state=FAILED
-    ...    exception_type=APPLICAT?ION
+    ...    exception_type=APPLICATION
     ...    code=TRAFFIC_DATA_POST_FAILED
     ...    message=${return}
 

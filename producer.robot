@@ -32,7 +32,12 @@ Load traffic data as table
 
 Filter and sort traffic data
     [Arguments]    ${table}
-    Filter Table By Column    ${table}    NumericValue    <    ${5.0}
-    Filter Table By Column    ${table}    Dim1    ==    BTSX
-    Sort Table By Column    ${table}    TimeDim    ascending=False
+    ${max_rate}=    Set Variable    ${5.0}
+    ${rate_key}=    Set Variable    NumericValue
+    ${genter_key}=    Set Variable    Dim1
+    ${both_genders}=    Set Variable    BTSX
+    ${year_key}=    Set Variable    TimeDim
+    Filter Table By Column    ${table}    ${rate_key}    <    ${max_rate}
+    Filter Table By Column    ${table}    ${genter_key}    ==    ${both_genders}
+    Sort Table By Column    ${table}    ${year_key}    ascending=False
     RETURN    ${table}

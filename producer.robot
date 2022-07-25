@@ -18,6 +18,7 @@ Produce traffic data work items
     ${traffic_data}=    Load traffic data as table
     ${filtered_data}=    Filter and sort traffic data    ${traffic_data}
     ${filtered_data}=    Get latest data by country    ${filtered_data}
+    ${payloads}=    Create work item payloads    ${filtered_data}
 
 
 *** Keywords ***
@@ -54,3 +55,16 @@ Get latest data by country
         Append To List    ${latest_data_by_country}    ${first_row}
     END
     RETURN    ${latest_data_by_country}
+
+Create work item payloads
+    [Arguments]    ${traffic_data}
+    ${payloads}=    Create List
+    FOR    ${row}    IN    @{traffic_data}
+        ${payload}=
+        ...    Create Dictionary
+        ...    country=${row}[SpatialDim]
+        ...    year=${row}[TimeDim]
+        ...    rate=${row}[NumericValue]
+        Append To List    ${payloads}    ${payload}
+    END
+    RETURN    ${payloads}

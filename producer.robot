@@ -49,7 +49,7 @@ Filter and sort traffic data
 
 Get latest data by country
     [Arguments]    ${table}
-    ${table} = Group table By Column    ${table}    ${COUNTRY_KEY}
+    ${table}=    Group table By Column    ${table}    ${COUNTRY_KEY}
     ${latest_data_by_country}=    Create List
     FOR    ${group}    IN    @{table}
         ${first_row}=    Pop Table Row    ${group}

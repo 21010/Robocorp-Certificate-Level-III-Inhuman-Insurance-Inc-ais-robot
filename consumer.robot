@@ -29,11 +29,26 @@ Post traffic data to sales system
     ...    POST
     ...    url=https://robocorp.com/inhuman-insurance-inc/sales-system-api
     ...    json=${traffic_data}
-    Handle traffic API response    ${status}
+    Handle traffic API response    ${status}    ${return}    ${traffic_data}
 
 Handle traffic API response
-    [Arguments]    ${status}
-    IF    "${status}" == "PASS"    Handle traffic API OK response
+    [Arguments]    ${status}    ${return}    ${traffic_data}
+    IF    "${status}" == "PASS"
+        Handle traffic API OK response
+    ELSE
+        Handle traffic API error response    ${return}    ${traffic_data}
+    END
 
 Handle traffic API OK response
     Release Input Work Item    DONE
+
+Handle traffic API error response
+    [Arguments]    ${return}    ${traffic_data}
+    Log
+    ...    Traffic data posting failed: ${traffic_data} ${return}
+    ...    ERROR
+    Release Input Work Item
+    ...    state=FAILED
+    ...    exception_type=APPLICAT?ION
+    ...    code=TRAFFIC_DATA_POST_FAILED
+    ...    message=${return}

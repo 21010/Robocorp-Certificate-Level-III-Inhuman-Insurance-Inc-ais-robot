@@ -15,7 +15,11 @@ Process traffic data
     ${payload}=    Get Work Item Payload
     ${traffic_data}=    Set Variable    ${payload}[${WORK_ITEM_NAME}]
     ${valid}=    Validate traffic data    ${traffic_data}
-    IF    ${valid}    Post traffic data to sales system    ${traffic_data}
+    IF    ${valid}
+        Post traffic data to sales system    ${traffic_data}
+    ELSE
+        Handle invalid traffic data    ${traffic_data}
+    END
 
 Validate traffic data
     [Arguments]    ${traffic_data}
@@ -52,3 +56,13 @@ Handle traffic API error response
     ...    exception_type=APPLICAT?ION
     ...    code=TRAFFIC_DATA_POST_FAILED
     ...    message=${return}
+
+Handle invalid traffic data
+    [Arguments]    ${traffic_data}
+    ${message}=    Set Variable    Invalid traffic data: ${traffic_data}
+    Log    ${message}    WARN
+    Release Input Work Item
+    ...    state=FAILED
+    ...    exception_type=BUSINESS
+    ...    code=INVALID_TRAFFIC_DATA
+    ...    message=${message}

@@ -6,6 +6,7 @@ Library             RPA.HTTP
 Library             RPA.JSON
 Library             RPA.Tables
 Library             Collections
+Library             RPA.Robocloud.Items
 
 
 *** Variables ***
@@ -24,6 +25,7 @@ Produce traffic data work items
     ${filtered_data}=    Filter and sort traffic data    ${traffic_data}
     ${filtered_data}=    Get latest data by country    ${filtered_data}
     ${payloads}=    Create work item payloads    ${filtered_data}
+    Save work item payloads    ${payloads}
 
 
 *** Keywords ***
@@ -69,3 +71,8 @@ Create work item payloads
         Append To List    ${payloads}    ${payload}
     END
     RETURN    ${payloads}
+
+Save work item payloads
+    [Arguments]    ${payloads}
+    ${variables}=    Create Dictionary    traffic_data=${payloads}
+    Create Output Work Item    variables=${variables}    save=True

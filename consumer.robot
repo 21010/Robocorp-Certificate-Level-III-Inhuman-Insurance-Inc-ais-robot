@@ -2,7 +2,7 @@
 Documentation       Inhuman Insurance, Inc. Artificial Intelligence System robot.
 ...                 Consumes traffic data work items.
 
-Library             RPA.Robocorp.WorkItems
+Resource            shared.robot
 
 
 *** Tasks ***
@@ -13,3 +13,4 @@ Consume traffic data work items
 *** Keywords ***
 Process traffic data
     ${payload}=    Get Work Item Payload
+    ${traffic_data}=    Set Variable    ${payload}[${WORK_ITEM_NAME}]
